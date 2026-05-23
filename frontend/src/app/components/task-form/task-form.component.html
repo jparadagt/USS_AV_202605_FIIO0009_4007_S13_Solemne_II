@@ -1,0 +1,43 @@
+<form [formGroup]="taskForm" (ngSubmit)="submit()">
+
+  <div>
+    <label>Title</label>
+
+    <input type="text" formControlName="title">
+
+    <small *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+      Title is required (min 3 chars)
+    </small>
+  </div>
+
+  <div>
+    <label>Description</label>
+
+    <textarea formControlName="description"></textarea>
+
+    <small *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched">
+      Description is required (min 5 chars)
+    </small>
+  </div>
+
+  <div>
+    <label>Priority</label>
+
+    <select formControlName="priority">
+      <option value="LOW">LOW</option>
+      <option value="MEDIUM">MEDIUM</option>
+      <option value="HIGH">HIGH</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Due Date</label>
+
+    <input type="date" formControlName="dueDate">
+  </div>
+
+  <button type="submit">
+    Add Task
+  </button>
+
+</form>
