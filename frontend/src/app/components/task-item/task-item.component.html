@@ -1,63 +1,135 @@
 <div class="task-card">
 
-  <h3>
-    {{ task.title }}
-  </h3>
+  <ng-container *ngIf="!isEditing; else editTask">
 
-  <p>
-    {{ task.description }}
-  </p>
+    <h3>
+      {{ task.title }}
+    </h3>
 
-  <p>
-    Status:
-    <strong>{{ task.status }}</strong>
-  </p>
+    <p>
+      {{ task.description }}
+    </p>
 
-  <p>
-    Priority:
-    <strong>{{ task.priority }}</strong>
-  </p>
+    <p>
+      Status:
+      <strong>{{ task.status }}</strong>
+    </p>
 
-  <p>
-    Due Date:
-    {{ task.dueDate | date }}
-  </p>
+    <p>
+      Priority:
+      <strong>{{ task.priority }}</strong>
+    </p>
 
-  <p>
+    <p>
+      Due Date:
+      {{ task.dueDate | date }}
+    </p>
 
-  Remaining Days:
+    <p>
 
-  <strong>
+      Remaining Days:
 
-    <span *ngIf="isExpired()">
-      Expired
-    </span>
+      <strong>
 
-    <span *ngIf="!isExpired()">
-      {{ getRemainingDays() }}
-    </span>
+        <span *ngIf="isExpired()">
+          Expired
+        </span>
 
-  </strong>
+        <span *ngIf="!isExpired()">
+          {{ getRemainingDays() }}
+        </span>
 
-</p>
+      </strong>
 
-<p *ngIf="isDueSoon()">
-  ⚠️ Task due soon
-</p>
+    </p>
 
-  <button (click)="onToggleStatus()">
+    <p *ngIf="isDueSoon()">
+      Task due soon
+    </p>
 
-    {{
-      task.status === 'PENDING'
+    <button type="button" (click)="onToggleStatus()">
+
+      {{
+        task.status === 'PENDING'
         ? 'Complete'
         : 'Mark Pending'
-    }}
+      }}
 
-  </button>
+    </button>
 
-  <button (click)="onDelete()">
-    Delete
-  </button>
+    <button type="button" (click)="startEdit()">
+      Edit
+    </button>
+
+    <button type="button" (click)="onDelete()">
+      Delete
+    </button>
+
+  </ng-container>
+
+  <ng-template #editTask>
+
+    <form (ngSubmit)="saveEdit()">
+
+      <div>
+        <label>Title</label>
+        <input
+          type="text"
+          name="title"
+          [(ngModel)]="editableTask.title"
+          required>
+      </div>
+
+      <div>
+        <label>Description</label>
+        <textarea
+          name="description"
+          [(ngModel)]="editableTask.description"
+          required>
+        </textarea>
+      </div>
+
+      <div>
+        <label>Status</label>
+        <select
+          name="status"
+          [(ngModel)]="editableTask.status">
+          <option value="PENDING">PENDING</option>
+          <option value="COMPLETED">COMPLETED</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Priority</label>
+        <select
+          name="priority"
+          [(ngModel)]="editableTask.priority">
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Due Date</label>
+        <input
+          type="date"
+          name="dueDate"
+          [(ngModel)]="editableTask.dueDate"
+          required>
+      </div>
+
+      <button type="submit">
+        Save
+      </button>
+
+      <button type="button" (click)="cancelEdit()">
+        Cancel
+      </button>
+
+    </form>
+
+  </ng-template>
 
 </div>
 
