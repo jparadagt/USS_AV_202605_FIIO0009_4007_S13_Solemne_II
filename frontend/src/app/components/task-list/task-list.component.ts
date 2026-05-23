@@ -23,11 +23,16 @@ import { TaskService } from '../../services/task.service';
 export class TaskListComponent {
 	tasks: Task[] = [];
 	allTasks: Task[] = [];
+	currentFilters = {
+		status: 'ALL',
+		priority: 'ALL',
+		keyword: ''
+	};
 	
 	constructor(private taskService: TaskService) {
 		this.taskService.getTasks().subscribe((tasks) => {
 			this.allTasks = tasks;
-			this.tasks = [...this.allTasks];
+			this.refreshTasks();
 		});
 	}
 	
@@ -37,46 +42,69 @@ export class TaskListComponent {
 		.subscribe(createdTask => {
 			
 			this.allTasks.unshift(createdTask);
-			this.tasks = [...this.allTasks];
+			this.refreshTasks();
 			
 		});
 		
 	}
 	
 	deleteTask(taskId: number): void {
-		this.allTasks = this.allTasks.filter(
-			task => task.id !== taskId
-		);
-		
-		this.tasks = [...this.allTasks];	
+		this.taskService.deleteTask(taskId)
+		.subscribe(() => {
+			this.allTasks = this.allTasks.filter(
+				task => task.id !== taskId
+			);
+
+			this.refreshTasks();
+		});
 	}
 	
 	toggleTaskStatus(taskId: number): void {
-		this.allTasks = this.allTasks.map(task => {
-			if (task.id === taskId) {
-				
-				return {
-					...task,
-					status:
-					task.status === 'PENDING'
-					? 'COMPLETED'
-					: 'PENDING'
-				};
-				
-			}
-			
-			return task;
+		const task = this.allTasks.find(
+			currentTask => currentTask.id === taskId
+		);
+
+		if (!task) {
+			return;
+		}
+
+		const updatedTask: Task = {
+			...task,
+			status:
+			task.status === 'PENDING'
+			? 'COMPLETED'
+			: 'PENDING'
+		};
+
+		this.updateTask(updatedTask);
+	}
+
+	updateTask(task: Task): void {
+		this.taskService.updateTask(task)
+		.subscribe(updatedTask => {
+			this.allTasks = this.allTasks.map(currentTask => {
+				if (currentTask.id === updatedTask.id) {
+					return updatedTask;
+				}
+
+				return currentTask;
+			});
+
+			this.refreshTasks();
 		});
-		
-		this.tasks = [...this.allTasks];	
 	}
 	
 	applyFilters(filters: any): void {
+		this.currentFilters = filters;
+		this.refreshTasks();
+	}
+
+	private refreshTasks(): void {
 		this.tasks = this.allTasks.filter(task => {
 			
-			const matchesStatus = filters.status === 'ALL' || task.status === filters.status;
-			const matchesPriority = filters.priority === 'ALL' || task.priority === filters.priority;
-			const keyword = filters.keyword.toLowerCase();
+			const matchesStatus = this.currentFilters.status === 'ALL' || task.status === this.currentFilters.status;
+			const matchesPriority = this.currentFilters.priority === 'ALL' || task.priority === this.currentFilters.priority;
+			const keyword = this.currentFilters.keyword.toLowerCase();
 			const matchesKeyword = task.title.toLowerCase().includes(keyword) || task.description.toLowerCase().includes(keyword);
 			
 			return (
