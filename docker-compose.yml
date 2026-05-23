@@ -1,0 +1,36 @@
+services:
+
+  postgres:
+    image: postgres
+    container_name: taskmanager-postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskmanager
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./backend
+    container_name: taskmanager-backend
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: taskmanager
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./database/init.sql:/database/init.sql
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    container_name: taskmanager-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
