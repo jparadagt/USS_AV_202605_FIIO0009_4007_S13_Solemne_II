@@ -1,25 +1,52 @@
-<app-task-report
-  [tasks]="tasks">
-</app-task-report>
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+  <div>
+    <h1 class="h3 mb-1">
+      Task Manager
+    </h1>
 
-<app-task-filter
-  (filtersChanged)="applyFilters($event)">
-</app-task-filter>
+    <p class="text-secondary mb-0">
+      Manage your tasks, priorities and deadlines.
+    </p>
+  </div>
+</div>
 
-<app-task-form
-  (taskCreated)="addTask($event)">
-</app-task-form>
+<div class="row g-4 mb-4">
+  <div class="col-12 col-xl-4">
+    <app-task-report
+      [tasks]="tasks">
+    </app-task-report>
+  </div>
 
-<hr>
+  <div class="col-12 col-xl-8">
+    <app-task-form
+      (taskCreated)="addTask($event)">
+    </app-task-form>
+  </div>
+</div>
 
-<div class="task-list">
+<div class="mb-4">
+  <app-task-filter
+    (filtersChanged)="applyFilters($event)">
+  </app-task-filter>
+</div>
+
+<div class="row g-3">
 
   <app-task-item
+    class="col-12 col-lg-6"
     *ngFor="let task of tasks"
     [task]="task"
     (delete)="deleteTask($event)"
     (toggleStatus)="toggleTaskStatus($event)"
     (update)="updateTask($event)">
   </app-task-item>
+
+  <div
+    class="col-12"
+    *ngIf="tasks.length === 0">
+    <div class="alert alert-info mb-0">
+      No tasks match the selected filters.
+    </div>
+  </div>
 
 </div>

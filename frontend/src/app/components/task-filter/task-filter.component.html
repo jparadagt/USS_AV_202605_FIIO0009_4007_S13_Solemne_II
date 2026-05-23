@@ -1,32 +1,47 @@
-<div>
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <div class="row g-3 align-items-end">
+      <div class="col-12 col-lg-6">
+        <label class="form-label">Search</label>
 
-  <input
-    type="text"
-    placeholder="Search task..."
-    [(ngModel)]="keyword"
-    (input)="applyFilters()">
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Search task..."
+          [(ngModel)]="keyword"
+          (input)="applyFilters()">
+      </div>
 
-  <select
-    [(ngModel)]="status"
-    (change)="applyFilters()">
+      <div class="col-12 col-md-6 col-lg-3">
+        <label class="form-label">Status</label>
 
-    <option value="ALL">All Status</option>
-    <option value="PENDING">Pending</option>
-    <option value="COMPLETED">Completed</option>
+        <select
+          class="form-select"
+          [(ngModel)]="status"
+          (change)="applyFilters()">
 
-  </select>
+          <option value="ALL">All Status</option>
+          <option value="PENDING">Pending</option>
+          <option value="COMPLETED">Completed</option>
 
-  <select
-    [(ngModel)]="priority"
-    (change)="applyFilters()">
+        </select>
+      </div>
 
-    <option value="ALL">All Priorities</option>
-    <option value="LOW">Low</option>
-    <option value="MEDIUM">Medium</option>
-    <option value="HIGH">High</option>
+      <div class="col-12 col-md-6 col-lg-3">
+        <label class="form-label">Priority</label>
 
-  </select>
+        <select
+          class="form-select"
+          [(ngModel)]="priority"
+          (change)="applyFilters()">
 
+          <option value="ALL">All Priorities</option>
+          <option value="LOW">Low</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="HIGH">High</option>
+
+        </select>
+      </div>
+    </div>
+  </div>
 </div>
-
-<hr>

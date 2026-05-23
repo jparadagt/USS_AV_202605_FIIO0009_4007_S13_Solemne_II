@@ -1,43 +1,74 @@
-<form [formGroup]="taskForm" (ngSubmit)="submit()">
+<form
+  class="card shadow-sm border-0 h-100"
+  [formGroup]="taskForm"
+  (ngSubmit)="submit()">
 
-  <div>
-    <label>Title</label>
+  <div class="card-body">
+    <h2 class="h5 mb-3">
+      Add Task
+    </h2>
 
-    <input type="text" formControlName="title">
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <label class="form-label">Title</label>
 
-    <small *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
-      Title is required (min 3 chars)
-    </small>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="title">
+
+        <div
+          class="form-text text-danger"
+          *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+          Title is required (min 3 chars)
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="form-label">Due Date</label>
+
+        <input
+          class="form-control"
+          type="date"
+          formControlName="dueDate">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Description</label>
+
+        <textarea
+          class="form-control"
+          rows="3"
+          formControlName="description">
+        </textarea>
+
+        <div
+          class="form-text text-danger"
+          *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched">
+          Description is required (min 5 chars)
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="form-label">Priority</label>
+
+        <select
+          class="form-select"
+          formControlName="priority">
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+        </select>
+      </div>
+
+      <div class="col-12 col-md-6 d-flex align-items-end">
+        <button
+          class="btn btn-primary w-100"
+          type="submit">
+          Add Task
+        </button>
+      </div>
+    </div>
   </div>
-
-  <div>
-    <label>Description</label>
-
-    <textarea formControlName="description"></textarea>
-
-    <small *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched">
-      Description is required (min 5 chars)
-    </small>
-  </div>
-
-  <div>
-    <label>Priority</label>
-
-    <select formControlName="priority">
-      <option value="LOW">LOW</option>
-      <option value="MEDIUM">MEDIUM</option>
-      <option value="HIGH">HIGH</option>
-    </select>
-  </div>
-
-  <div>
-    <label>Due Date</label>
-
-    <input type="date" formControlName="dueDate">
-  </div>
-
-  <button type="submit">
-    Add Task
-  </button>
 
 </form>
