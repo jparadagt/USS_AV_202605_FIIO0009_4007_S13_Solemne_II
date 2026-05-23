@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { Task } from '../../models/task';
 
 @Component({
@@ -11,7 +10,21 @@ import { Task } from '../../models/task';
   styleUrl: './task-item.component.scss'
 })
 export class TaskItemComponent {
-
+  
   @Input() task!: Task;
-
+  
+  @Output()
+  delete = new EventEmitter<number>();
+  
+  @Output()
+  toggleStatus = new EventEmitter<number>();
+  
+  onDelete(): void {
+    this.delete.emit(this.task.id);
+  }
+  
+  onToggleStatus(): void {
+    this.toggleStatus.emit(this.task.id);
+  }
+  
 }

@@ -1,13 +1,42 @@
 <div class="task-card">
 
-  <h3>{{ task.title }}</h3>
+  <h3>
+    {{ task.title }}
+  </h3>
 
-  <p>{{ task.description }}</p>
+  <p>
+    {{ task.description }}
+  </p>
 
-  <p>Status: {{ task.status }}</p>
+  <p>
+    Status:
+    <strong>{{ task.status }}</strong>
+  </p>
 
-  <p>Priority: {{ task.priority }}</p>
+  <p>
+    Priority:
+    <strong>{{ task.priority }}</strong>
+  </p>
 
-  <p>Due Date: {{ task.dueDate | date }}</p>
+  <p>
+    Due Date:
+    {{ task.dueDate | date }}
+  </p>
+
+  <button (click)="onToggleStatus()">
+
+    {{
+      task.status === 'PENDING'
+        ? 'Complete'
+        : 'Mark Pending'
+    }}
+
+  </button>
+
+  <button (click)="onDelete()">
+    Delete
+  </button>
 
 </div>
+
+<hr>
