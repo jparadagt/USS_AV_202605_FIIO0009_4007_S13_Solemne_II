@@ -1,0 +1,59 @@
+<div class="card h-100 shadow-sm border-0">
+  <div class="card-body">
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2 class="h5 mb-0">
+        Task Report
+      </h2>
+
+      <button
+        class="btn btn-outline-primary btn-sm"
+        type="button"
+        (click)="exportTasks()">
+        Export
+      </button>
+    </div>
+
+    <div class="d-grid gap-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="text-secondary">Total Tasks</span>
+        <span class="badge text-bg-dark">{{ tasks.length }}</span>
+      </div>
+
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="text-secondary">Completed</span>
+          <strong>{{ completedTasks }} ({{ completedPercentage }}%)</strong>
+        </div>
+
+        <div
+          class="progress"
+          role="progressbar"
+          aria-label="Completed tasks">
+          <div
+            class="progress-bar bg-success"
+            [style.width.%]="completedPercentage">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="text-secondary">Pending</span>
+          <strong>{{ pendingTasks }} ({{ pendingPercentage }}%)</strong>
+        </div>
+
+        <div
+          class="progress"
+          role="progressbar"
+          aria-label="Pending tasks">
+          <div
+            class="progress-bar bg-warning"
+            [style.width.%]="pendingPercentage">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

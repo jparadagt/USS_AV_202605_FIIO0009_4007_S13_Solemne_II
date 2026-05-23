@@ -1,0 +1,183 @@
+<div class="card h-100 shadow-sm border-0">
+  <div class="card-body">
+
+    <ng-container *ngIf="!isEditing; else editTask">
+
+      <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+        <div>
+          <h3 class="h5 mb-1">
+            {{ task.title }}
+          </h3>
+
+          <p class="text-secondary mb-0">
+            {{ task.description }}
+          </p>
+        </div>
+
+        <span
+          class="badge"
+          [ngClass]="{
+            'text-bg-success': task.status === 'COMPLETED',
+            'text-bg-warning': task.status === 'PENDING'
+          }">
+          {{ task.status }}
+        </span>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <span
+          class="badge"
+          [ngClass]="{
+            'text-bg-secondary': task.priority === 'LOW',
+            'text-bg-primary': task.priority === 'MEDIUM',
+            'text-bg-danger': task.priority === 'HIGH'
+          }">
+          {{ task.priority }}
+        </span>
+
+        <span class="badge text-bg-light border">
+          Due {{ task.dueDate | date }}
+        </span>
+      </div>
+
+      <div
+        class="alert py-2 mb-3"
+        [ngClass]="{
+          'alert-danger': isExpired(),
+          'alert-warning': !isExpired() && isDueSoon(),
+          'alert-light border': !isExpired() && !isDueSoon()
+        }">
+        <span class="text-secondary">Remaining Days:</span>
+
+        <strong>
+
+          <span *ngIf="isExpired()">
+            Expired
+          </span>
+
+          <span *ngIf="!isExpired()">
+            {{ getRemainingDays() }}
+          </span>
+
+        </strong>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button
+          class="btn btn-sm"
+          [ngClass]="{
+            'btn-success': task.status === 'PENDING',
+            'btn-outline-secondary': task.status === 'COMPLETED'
+          }"
+          type="button"
+          (click)="onToggleStatus()">
+
+          {{
+            task.status === 'PENDING'
+            ? 'Complete'
+            : 'Mark Pending'
+          }}
+
+        </button>
+
+        <button
+          class="btn btn-outline-primary btn-sm"
+          type="button"
+          (click)="startEdit()">
+          Edit
+        </button>
+
+        <button
+          class="btn btn-outline-danger btn-sm"
+          type="button"
+          (click)="onDelete()">
+          Delete
+        </button>
+      </div>
+
+    </ng-container>
+
+    <ng-template #editTask>
+
+      <form (ngSubmit)="saveEdit()">
+        <h3 class="h5 mb-3">
+          Edit Task
+        </h3>
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input
+            class="form-control"
+            type="text"
+            name="title"
+            [(ngModel)]="editableTask.title"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            rows="3"
+            name="description"
+            [(ngModel)]="editableTask.description"
+            required>
+          </textarea>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <label class="form-label">Status</label>
+            <select
+              class="form-select"
+              name="status"
+              [(ngModel)]="editableTask.status">
+              <option value="PENDING">PENDING</option>
+              <option value="COMPLETED">COMPLETED</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <label class="form-label">Priority</label>
+            <select
+              class="form-select"
+              name="priority"
+              [(ngModel)]="editableTask.priority">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <label class="form-label">Due Date</label>
+            <input
+              class="form-control"
+              type="date"
+              name="dueDate"
+              [(ngModel)]="editableTask.dueDate"
+              required>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+          <button
+            class="btn btn-primary btn-sm"
+            type="submit">
+            Save
+          </button>
+
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            type="button"
+            (click)="cancelEdit()">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+
+    </ng-template>
+
+  </div>
+</div>
