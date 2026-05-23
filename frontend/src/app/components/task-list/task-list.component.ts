@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../models/task';
-import { TASKS_MOCK } from '../../mock/tasks.mock';
 import { TaskItemComponent } from '../task-item/task-item.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskFilterComponent } from '../task-filter/task-filter.component';
 import { TaskReportComponent } from '../task-report/task-report.component';
+import { TaskService } from '../../services/task.service';
 
 @Component({
 	selector: 'app-task-list',
@@ -21,12 +21,19 @@ import { TaskReportComponent } from '../task-report/task-report.component';
 	styleUrl: './task-list.component.scss'
 })
 export class TaskListComponent {
-	tasks: Task[] = TASKS_MOCK;
-	allTasks: Task[] = TASKS_MOCK;
+	tasks: Task[] = [];
+	allTasks: Task[] = [];
+	
+	constructor(private taskService: TaskService) {
+		this.taskService.getTasks().subscribe((tasks) => {
+			this.allTasks = tasks;
+			this.tasks = [...this.allTasks];
+		});
+	}
 	
 	addTask(task: Task): void {
 		this.allTasks.unshift(task);
-		this.tasks = [...this.allTasks];	
+		this.tasks = [...this.allTasks];
 	}
 	
 	deleteTask(taskId: number): void {
@@ -38,8 +45,9 @@ export class TaskListComponent {
 	}
 	
 	toggleTaskStatus(taskId: number): void {
-		this.tasks = this.tasks.map(task => {
+		this.allTasks = this.allTasks.map(task => {
 			if (task.id === taskId) {
+				
 				return {
 					...task,
 					status:
@@ -47,10 +55,13 @@ export class TaskListComponent {
 					? 'COMPLETED'
 					: 'PENDING'
 				};
+				
 			}
 			
 			return task;
 		});
+		
+		this.tasks = [...this.allTasks];	
 	}
 	
 	applyFilters(filters: any): void {
