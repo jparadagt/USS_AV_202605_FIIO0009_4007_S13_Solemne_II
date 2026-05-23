@@ -32,8 +32,15 @@ export class TaskListComponent {
 	}
 	
 	addTask(task: Task): void {
-		this.allTasks.unshift(task);
-		this.tasks = [...this.allTasks];
+		
+		this.taskService.createTask(task)
+		.subscribe(createdTask => {
+			
+			this.allTasks.unshift(createdTask);
+			this.tasks = [...this.allTasks];
+			
+		});
+		
 	}
 	
 	deleteTask(taskId: number): void {
