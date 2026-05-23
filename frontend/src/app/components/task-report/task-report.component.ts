@@ -11,48 +11,61 @@ import { Task } from '../../models/task';
   styleUrl: './task-report.component.scss'
 })
 export class TaskReportComponent {
-
+  
   @Input()
   tasks: Task[] = [];
-
+  
   get completedTasks(): number {
-
     return this.tasks.filter(
       task => task.status === 'COMPLETED'
     ).length;
-
   }
-
+  
   get pendingTasks(): number {
-
     return this.tasks.filter(
       task => task.status === 'PENDING'
     ).length;
-
   }
-
+  
   get completedPercentage(): number {
-
     if (this.tasks.length === 0) {
       return 0;
     }
-
+    
     return Math.round(
       (this.completedTasks / this.tasks.length) * 100
     );
-
   }
-
+  
   get pendingPercentage(): number {
-
     if (this.tasks.length === 0) {
       return 0;
     }
-
+    
     return Math.round(
       (this.pendingTasks / this.tasks.length) * 100
     );
-
   }
-
+  
+  exportTasks(): void {
+    const dataStr = JSON.stringify(
+      this.tasks,
+      null,
+      2
+    );
+    
+    const blob = new Blob(
+      [dataStr],
+      { type: 'application/json' }
+    );
+    
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    
+    a.href = url;
+    a.download = 'tasks-report.json';
+    a.click();
+    
+    window.URL.revokeObjectURL(url); 
+  }
 }
