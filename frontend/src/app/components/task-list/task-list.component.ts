@@ -5,6 +5,7 @@ import { TASKS_MOCK } from '../../mock/tasks.mock';
 import { TaskItemComponent } from '../task-item/task-item.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskFilterComponent } from '../task-filter/task-filter.component';
+import { TaskReportComponent } from '../task-report/task-report.component';
 
 @Component({
 	selector: 'app-task-list',
@@ -13,7 +14,8 @@ import { TaskFilterComponent } from '../task-filter/task-filter.component';
 		CommonModule,
 		TaskItemComponent,
 		TaskFormComponent,
-		TaskFilterComponent
+		TaskFilterComponent,
+		TaskReportComponent
 	],	
 	templateUrl: './task-list.component.html',
 	styleUrl: './task-list.component.scss'
