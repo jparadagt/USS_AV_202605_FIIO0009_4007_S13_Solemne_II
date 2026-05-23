@@ -23,6 +23,28 @@
     {{ task.dueDate | date }}
   </p>
 
+  <p>
+
+  Remaining Days:
+
+  <strong>
+
+    <span *ngIf="isExpired()">
+      Expired
+    </span>
+
+    <span *ngIf="!isExpired()">
+      {{ getRemainingDays() }}
+    </span>
+
+  </strong>
+
+</p>
+
+<p *ngIf="isDueSoon()">
+  ⚠️ Task due soon
+</p>
+
   <button (click)="onToggleStatus()">
 
     {{

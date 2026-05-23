@@ -27,4 +27,22 @@ export class TaskItemComponent {
     this.toggleStatus.emit(this.task.id);
   }
   
+  getRemainingDays(): number { 
+    const today = new Date();
+    const dueDate = new Date(this.task.dueDate);
+    const diffTime = dueDate.getTime() - today.getTime();
+    
+    return Math.ceil(
+      diffTime / (1000 * 60 * 60 * 24)
+    );
+  }
+  
+  isExpired(): boolean {
+    return this.getRemainingDays() < 0;
+  }
+  
+  isDueSoon(): boolean {
+    const days = this.getRemainingDays();
+    return days >= 0 && days <= 3;
+  }
 }
