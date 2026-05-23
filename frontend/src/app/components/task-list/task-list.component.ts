@@ -18,4 +18,26 @@ export class TaskListComponent {
 	addTask(task: Task): void {
 		this.tasks.unshift(task);
 	}
+	
+	deleteTask(taskId: number): void {
+		this.tasks = this.tasks.filter(
+			task => task.id !== taskId
+		);
+	}
+	
+	toggleTaskStatus(taskId: number): void {
+		this.tasks = this.tasks.map(task => {
+			if (task.id === taskId) {
+				return {
+					...task,
+					status:
+					task.status === 'PENDING'
+					? 'COMPLETED'
+					: 'PENDING'
+				};
+			}
+			
+			return task;
+		});
+	}
 }

@@ -8,7 +8,9 @@
 
   <app-task-item
     *ngFor="let task of tasks"
-    [task]="task">
+    [task]="task"
+    (delete)="deleteTask($event)"
+    (toggleStatus)="toggleTaskStatus($event)">
   </app-task-item>
 
 </div>
